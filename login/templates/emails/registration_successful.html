@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .email-container {
+      max-width: 650px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      height: 60px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #2AB39C 0%, #B9CA4C 100%);
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-subtitle {
+      color: white;
+      font-size: 16px;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .lock-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lock-icon i {
+      font-size: 28px;
+      color: white;
+    }
+
+    .content {
+      background-color: #DFE9A0;
+      background-image: linear-gradient(120deg, #DFE9A0 0%, #f5f8d5 100%);
+      padding: 30px;
+      position: relative;
+    }
+
+    .content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, #D7B7F6, #B9CA4C);
+    }
+
+    .greeting {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #2AB39C;
+      font-weight: 600;
+    }
+
+    .message {
+      margin-bottom: 25px;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .otp-container {
+      background-color: white;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .otp-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 100%;
+      background: linear-gradient(to bottom, #2AB39C, #B9CA4C);
+    }
+
+    .otp-title {
+      color: #2AB39C;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .otp-code {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 15px 25px;
+      border-radius: 8px;
+      margin: 20px 0;
+      display: inline-block;
+    }
+
+    .otp-note {
+      color: #777;
+      font-size: 14px;
+      margin-top: 15px;
+    }
+
+    .contact-info {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .contact-info p {
+      margin-bottom: 15px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .contact-button {
+      background-color: #2AB39C;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 500;
+      display: inline-block;
+      transition: all 0.3s ease;
+      text-align: center;
+      width: 200px;
+    }
+
+    .contact-button i {
+      margin-right: 8px;
+    }
+
+    .contact-button:hover {
+      background-color: #239183;
+      transform: translateY(-2px);
+    }
+
+    .whatsapp-button {
+      background-color: #25D366;
+    }
+
+    .website-button {
+      background-color: #D7B7F6;
+    }
+
+    .website-button:hover {
+      background-color: #c29fe9;
+    }
+
+    .footer {
+      background-color: #f8f0ff;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, #2AB39C, #D7B7F6);
+    }
+
+    .company-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2AB39C;
+      margin-bottom: 20px;
+    }
+
+    .address-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      /* Increased gap between address cards */
+      margin-bottom: 25px;
+    }
+
+    .address-block {
+      flex: 1;
+      min-width: 250px;
+      max-width: 280px;
+      /* Added max-width for better appearance */
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .address-block::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 100%;
+      background: linear-gradient(to bottom, #B9CA4C, #D7B7F6);
+    }
+
+    .branch-name {
+      font-weight: 600;
+      color: #2AB39C;
+      margin-bottom: 12px;
+      font-size: 16px;
+      padding-left: 8px;
+    }
+
+    .address-details {
+      color: #555;
+      line-height: 1.7;
+      font-size: 14px;
+      padding-left: 8px;
+    }
+
+    .phone-link {
+      display: inline-block;
+      color: #2AB39C;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .phone-link i {
+      margin-right: 5px;
+    }
+
+    .phone-link:hover {
+      color: #239183;
+    }
+
+    .social-links {
+      margin-top: 25px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: #2AB39C;
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon i {
+      font-size: 18px;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      background-color: #B9CA4C;
+    }
+
+    .copyright {
+      font-size: 13px;
+      color: #777;
+      margin-top: 15px;
+    }
+
+    /* Responsive styles */
+    @media only screen and (max-width: 650px) {
+
+      .content,
+      .footer {
+        padding: 20px 15px;
+      }
+
+      .otp-container {
+        padding: 20px 15px;
+      }
+
+      .address-block {
+        flex: 100%;
+        margin-bottom: 15px;
+        max-width: 100%;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .header-subtitle {
+        font-size: 14px;
+      }
+
+      .lock-icon {
+        top: 10px;
+        right: 10px;
+        width: 50px;
+        height: 50px;
+      }
+
+      .lock-icon i {
+        font-size: 22px;
+      }
+
+      .otp-code {
+        font-size: 24px;
+        padding: 10px 15px;
+      }
+
+      .contact-button {
+        width: 180px;
+        padding: 10px 20px;
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .greeting {
+        font-size: 16px;
+      }
+
+      .otp-code {
+        font-size: 22px;
+        letter-spacing: 3px;
+      }
+
+      .contact-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="email-container">
+    <div class="header">
+      <img src="https://res.cloudinary.com/dryjhjgqb/image/upload/v1746091191/lqpr0u8xlwubhxm1wx0y.png"
+        alt="Collegecue Logo" class="logo">
+      <h1>Registration Successful</h1>
+      <p class="header-subtitle">Welcome to Collegecue!</p>
+    </div>
+
+    <div class="content">
+      <p class="greeting">Hello {{name}},</p>
+      <p class="message">Thank you for registering with <strong>Collegecue</strong>. Your account has been successfully
+        created with the following email address:</p>
+      <p class="message"><strong>Email:</strong> {{email}}</p>
+      <p class="message">You can now log in and start using our services. If you have any questions or need assistance,
+        feel free to contact our support team.</p>
+
+      <div class="contact-info">
+        <p>Need help or have questions?</p>
+        <div class="contact-buttons">
+          <a href="tel:9647919906" class="contact-button">📞 Call Us</a>
+          <a href="https://wa.me/9647919906" class="contact-button whatsapp-button">💬 WhatsApp Us</a>
+          <a href="https://www.collegecue.com/" class="contact-button website-button">
+            🌐 Visit Website</a>
+        </div>
+      </div>
+
+      <p class="message">We’re thrilled to have you with us!</p>
+    </div>
+
+    <div class="footer">
+      <p><a href="https://www.collegecue.com/"
+          style="color: #2AB39C; font-weight: 600; text-decoration: none;">www.collegecue.com</a></p>
+      <p class="copyright">© 2025 Collegecue. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+
+</html>
