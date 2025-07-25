@@ -130,26 +130,26 @@ async def get_jobseeker_resume(request: Request, jobseeker_id: int, db: Session 
             d[col.name] = val
         return d
 
-    objective      = db.query(JobseekerObjective).filter_by(resume_id=resume.id).first()
-    education      = db.query(JobseekerEducation).filter_by(resume_id=resume.id).all()
-    experience     = db.query(JobseekerExperience).filter_by(resume_id=resume.id).all()
-    projects       = db.query(JobseekerProject).filter_by(resume_id=resume.id).all()
-    references     = db.query(JobseekerReference).filter_by(resume_id=resume.id).all()
+    objective = db.query(JobseekerObjective).filter_by(resume_id=resume.id).first()
+    education = db.query(JobseekerEducation).filter_by(resume_id=resume.id).all()
+    experience = db.query(JobseekerExperience).filter_by(resume_id=resume.id).all()
+    projects = db.query(JobseekerProject).filter_by(resume_id=resume.id).all()
+    references = db.query(JobseekerReference).filter_by(resume_id=resume.id).all()
     certifications = db.query(JobseekerCertification).filter_by(resume_id=resume.id).all()
-    achievements   = db.query(JobseekerAchievement).filter_by(resume_id=resume.id).all()
-    publications   = db.query(JobseekerPublication).filter_by(resume_id=resume.id).all()
+    achievements = db.query(JobseekerAchievement).filter_by(resume_id=resume.id).all()
+    publications = db.query(JobseekerPublication).filter_by(resume_id=resume.id).all()
 
     payload = {
         "status": "success",
-        "resume":         to_dict(resume, exclude=["id", "user_id"]),
-        "objective":      to_dict(objective) if objective else {},
-        "education":      [to_dict(e) for e in education],
-        "experience":     [to_dict(e) for e in experience],
-        "projects":       [to_dict(p) for p in projects],
-        "references":     [to_dict(r) for r in references],
-        "certifications": [to_dict(c) for c in certifications],
-        "achievements":   [to_dict(a) for a in achievements],
-        "publications":   [to_dict(pu) for pu in publications],
+        "resume": to_dict(resume, exclude=["id", "user_id"]),
+        "objective": to_dict(objective) if objective else {},
+        "education": [to_dict(e) for e in education],
+        "experience": [to_dict(e) for e in experience],
+        "projects":[to_dict(p) for p in projects],
+        "references":[to_dict(r) for r in references],
+        "certifications":[to_dict(c) for c in certifications],
+        "achievements":[to_dict(a) for a in achievements],
+        "publications": [to_dict(pu) for pu in publications],
     }
 
     return JSONResponse(content=payload)
