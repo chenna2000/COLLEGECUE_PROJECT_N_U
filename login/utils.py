@@ -63,7 +63,12 @@ def send_registration_email(name: str, email: str):
 
 def send_login_email(email: str, name: str):
     try:
-        env = Environment(loader=FileSystemLoader("login/templates"))
+        
+        env = Environment(
+            loader=FileSystemLoader("login/templates"),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
+        # env = Environment(loader=FileSystemLoader("login/templates"))
         template = env.get_template("emails/login_successful.html")
         html_content = template.render(email=email, name=name)
 
