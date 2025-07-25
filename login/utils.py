@@ -97,8 +97,8 @@ def send_otp_email(to_email: str, otp: str, name: str):
             loader=FileSystemLoader("login/templates"),
             autoescape=select_autoescape(['html', 'xml'])
         )
-        
-        env = Environment(loader=FileSystemLoader("login/templates"))
+
+        # env = Environment(loader=FileSystemLoader("login/templates"))
         template = env.get_template("login/otp_email.html")
         html_content = template.render(email=to_email, name=name, new_otp=otp)
 
