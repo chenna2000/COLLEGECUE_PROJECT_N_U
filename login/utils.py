@@ -10,10 +10,38 @@ from login.database import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_P
 from jinja2 import Environment, FileSystemLoader  # type: ignore
 from job_portal.core.ws_manager import manager
 
+from jinja2 import Environment, FileSystemLoader, select_autoescape # type: ignore
+
+
+
+
+# def send_registration_email(name: str, email: str):
+#     try:
+#         env = Environment(loader=FileSystemLoader("login/templates"))
+#         template = env.get_template("emails/registration_successful.html")
+#         html_content = template.render(name=name, email=email)
+
+#         msg = MIMEMultipart("alternative")
+#         msg["Subject"] = "Registration Successful - Collegecue"
+#         msg["From"] = EMAIL_HOST_USER
+#         msg["To"] = email
+
+#         mime_html = MIMEText(html_content, "html")
+#         msg.attach(mime_html)
+
+#         with smtplib.SMTP(EMAIL_HOST, EMAIL_PORT) as server:
+#             server.starttls()
+#             server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+#             server.send_message(msg)
+#     except Exception as e:
+#         raise Exception(f"Failed to send registration email: {str(e)}")
 
 def send_registration_email(name: str, email: str):
     try:
-        env = Environment(loader=FileSystemLoader("login/templates"))
+        env = Environment(
+            loader=FileSystemLoader("login/templates"),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
         template = env.get_template("emails/registration_successful.html")
         html_content = template.render(name=name, email=email)
 
@@ -31,6 +59,7 @@ def send_registration_email(name: str, email: str):
             server.send_message(msg)
     except Exception as e:
         raise Exception(f"Failed to send registration email: {str(e)}")
+
 
 def send_login_email(email: str, name: str):
     try:

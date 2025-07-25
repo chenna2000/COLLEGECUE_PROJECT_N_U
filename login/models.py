@@ -1,4 +1,4 @@
-from sqlalchemy import  Column, ForeignKey, String, Boolean, DECIMAL, Integer, DateTime, Text, func # type: ignore
+from sqlalchemy import Column, ForeignKey, String, Boolean, DECIMAL, Integer, DateTime, Text, func # type: ignore
 from datetime import datetime
 from sqlalchemy.orm import relationship # type: ignore
 from login.database import Base
