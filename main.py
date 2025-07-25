@@ -31,9 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY) 
-
 app.include_router(company_routes.router, prefix="/company")
 app.include_router(new_user_routes.router, prefix="/new-user")
 app.include_router(jobseeker_routes.router, prefix="/jobseeker")

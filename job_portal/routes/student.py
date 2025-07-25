@@ -127,26 +127,26 @@ async def get_user_resume(request: Request, user_id: int, db: Session = Depends(
             d[col.name] = val
         return d
 
-    objective      = db.query(Objective).filter_by(resume_id=resume.id).first()
-    education      = db.query(Education).filter_by(resume_id=resume.id).all()
-    experience     = db.query(Experience).filter_by(resume_id=resume.id).all()
-    projects       = db.query(Project).filter_by(resume_id=resume.id).all()
-    references     = db.query(Reference).filter_by(resume_id=resume.id).all()
+    objective = db.query(Objective).filter_by(resume_id=resume.id).first()
+    education = db.query(Education).filter_by(resume_id=resume.id).all()
+    experience = db.query(Experience).filter_by(resume_id=resume.id).all()
+    projects = db.query(Project).filter_by(resume_id=resume.id).all()
+    references = db.query(Reference).filter_by(resume_id=resume.id).all()
     certifications = db.query(Certification).filter_by(resume_id=resume.id).all()
-    achievements   = db.query(Achievements).filter_by(resume_id=resume.id).all()
-    publications   = db.query(Publications).filter_by(resume_id=resume.id).all()
+    achievements = db.query(Achievements).filter_by(resume_id=resume.id).all()
+    publications = db.query(Publications).filter_by(resume_id=resume.id).all()
 
     payload = {
         "status": "success",
-        "resume":         to_dict(resume, exclude=["id", "user_id"]),
-        "objective":      to_dict(objective) if objective else {},
-        "education":      [to_dict(e) for e in education],
-        "experience":     [to_dict(e) for e in experience],
-        "projects":       [to_dict(p) for p in projects],
-        "references":     [to_dict(r) for r in references],
-        "certifications": [to_dict(c) for c in certifications],
-        "achievements":   [to_dict(a) for a in achievements],
-        "publications":   [to_dict(pu) for pu in publications],
+        "resume": to_dict(resume, exclude=["id", "user_id"]),
+        "objective": to_dict(objective) if objective else {},
+        "education": [to_dict(e) for e in education],
+        "experience": [to_dict(e) for e in experience],
+        "projects": [to_dict(p) for p in projects],
+        "references": [to_dict(r) for r in references],
+        "certifications":[to_dict(c) for c in certifications],
+        "achievements": [to_dict(a) for a in achievements],
+        "publications": [to_dict(pu) for pu in publications],
     }
 
     return JSONResponse(content=payload)
