@@ -51,7 +51,7 @@ async def create_jobseeker_resume(request: Request, jobseeker_id: int, db: Sessi
             for k, v in resume_data.items():
                 setattr(resume, k, v)
         else:
-            resume = JobseekerResume(**resume_data,  job_seeker_id=jobseeker_obj.id)
+            resume = JobseekerResume(**resume_data, job_seeker_id=jobseeker_obj.id)
             db.add(resume)
         db.commit()
         db.refresh(resume)

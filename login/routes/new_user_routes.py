@@ -7,7 +7,7 @@ from passlib.hash import bcrypt # type: ignore
 from login import models
 from login.schemas import BankDetails, DeleteAccountRequest, ForgotRequest, ForgotRequest2, ResetPasswordRequest, VerifySchema, newusercreate, newuserlogin, newusernextstep
 from login.database import SessionLocal
-from login.utils import   generate_referral_code, send_login_email, send_otp_email, send_registration_email
+from login.utils import generate_referral_code, send_login_email, send_otp_email, send_registration_email
 from google.oauth2.service_account import Credentials  # type: ignore
 import logging
 
@@ -422,7 +422,7 @@ def resend_otp(request: Request, db: Session = Depends(get_db)):
 
         request.session["otp"] = new_otp
 
-        if not  send_otp_email(user.email, new_otp, user.firstname):
+        if not send_otp_email(user.email, new_otp, user.firstname):
             raise HTTPException(status_code=500, detail="Failed to send OTP email")
 
         return JSONResponse(content={"message": "OTP sent successfully"}, status_code=200)

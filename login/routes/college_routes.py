@@ -5,7 +5,7 @@ from login import models, schemas
 from login.database import SessionLocal
 from passlib.hash import bcrypt # type: ignore
 from fastapi.responses import JSONResponse # type: ignore
-from login.utils import  send_login_email, send_otp_email, send_registration_email
+from login.utils import send_login_email, send_otp_email, send_registration_email
 from google.oauth2.service_account import Credentials # type: ignore
 import logging
 
