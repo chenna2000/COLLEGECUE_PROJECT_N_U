@@ -309,3 +309,29 @@ class Message(Base):
     receiver_id = Column(Integer)     
     content = Column(Text)
     timestamp = Column(DateTime, default=datetime.utcnow)
+
+class Event_Hoster(Base):
+    __tablename__ = "event_hoster"
+
+    id = Column(Integer, primary_key=True, index=True)
+    logo = Column(String(512), nullable=True)
+    opportunity_type = Column(String(255), nullable=False)
+    opportunity_sub_type = Column(String(255), nullable=False)
+    visibility = Column(String(255), nullable=False)
+    opportunity_title = Column(String(255), nullable=False)
+    organization_name = Column(String(255), nullable=False)
+    website = Column(String(255), nullable=False)
+    festival_name = Column(String(128), nullable=True, default=None)
+    mode_of_event = Column(String(255), nullable=False)
+    category = Column(String(255), nullable=False)
+    skills = Column(String(255), nullable=False)
+    about_opportunity = Column(Text, nullable=False)
+    participant_type = Column(String(255), nullable=False)
+    min_member = Column(Integer, nullable=True)
+    max_member = Column(Integer, nullable=True)
+    start_date = Column(DateTime, nullable=True, default=func.now())
+    end_date = Column(DateTime, nullable=True, default=func.now())
+   
+    company_id = Column(Integer, ForeignKey("company_in_charge.id"))
+    university_id = Column(Integer, ForeignKey("university_in_charge.id"))
+    consultant_id = Column(Integer, ForeignKey("consultant.id"))

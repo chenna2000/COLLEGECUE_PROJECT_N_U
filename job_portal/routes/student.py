@@ -14,6 +14,8 @@ from typing import List, Union, Optional
 from fastapi import status # type: ignore
 from itertools import chain
 from uuid import UUID
+from login.models import Event_Hoster
+
 
 
 app = FastAPI()
@@ -151,6 +153,107 @@ async def get_user_resume(request: Request, user_id: int, db: Session = Depends(
 
     return JSONResponse(content=payload)
 
+# @router.get("/user-application-status/{user_id}")
+# def user_application_status_counts(user_id: int, request: Request, db: Session = Depends(get_db)):
+#     auth_header = request.headers.get("Authorization")
+#     if not auth_header or not auth_header.startswith("Bearer "):
+#         raise HTTPException(status_code=400, detail="Token is missing or invalid format")
+
+#     token = auth_header.split(" ")[1]
+#     email = request.query_params.get("email")
+#     if not email:
+#         raise HTTPException(status_code=400, detail="Email parameter is required")
+
+#     user = db.query(new_user).filter_by(id=user_id, token=token, email=email).first()
+#     if not user:
+#         raise HTTPException(status_code=404, detail="Invalid token or user not found")
+
+#     total_jobs_applied = (
+#         db.query(Application).filter_by(user_id=user.id).count() +
+#         db.query(Application1).filter_by(user_id=user.id).count()
+#     )
+
+#     def count_status(model, status):
+#         return db.query(model).filter_by(user_id=user.id, status=status).count()
+
+#     pending_count = count_status(Application, "pending") + count_status(Application1, "pending")
+#     interview_scheduled_count = count_status(Application, "interview_scheduled") + count_status(Application1, "interview_scheduled")
+#     rejected_count = count_status(Application, "rejected") + count_status(Application1, "rejected")
+
+#     college_enquiries_count = db.query(NewUserEnquiry).filter_by(email=email).count()
+
+#     def get_monthly_counts(model, date_field, status=None):
+#         query = db.query(
+#             func.date_format(getattr(model, date_field), '%Y-%m').label("month"),
+#             func.count().label("count")
+#         ).filter_by(user_id=user.id)
+
+#         if status:
+#             query = query.filter(model.status == status)
+
+#         return {r.month: r.count for r in query.group_by("month").order_by("month").all()}
+
+#     def merge_monthly_counts(model1, model2, date_field, status=None):
+#         counts1 = get_monthly_counts(model1, date_field, status)
+#         counts2 = get_monthly_counts(model2, date_field, status)
+
+#         combined = counts1.copy()
+#         for month, count in counts2.items():
+#             combined[month] = combined.get(month, 0) + count
+#         return combined
+
+#     jobs_applied_by_month = merge_monthly_counts(Application, Application1, "applied_at")
+#     pending_by_month = merge_monthly_counts(Application, Application1, "applied_at", "pending")
+#     interview_by_month = merge_monthly_counts(Application, Application1, "applied_at", "interview_scheduled")
+#     rejected_by_month = merge_monthly_counts(Application, Application1, "applied_at", "rejected")
+
+#     college_enquiries_by_month = {
+#         r.month: r.count for r in db.query(
+#             func.date_format(NewUserEnquiry.created_at, '%Y-%m').label("month"),
+#             func.count().label("count")
+#         ).filter_by(email=email).group_by("month").order_by("month").all()
+#     }
+
+#     applied_jobs_company = db.query(Application, Job).join(Job, Application.job_id == Job.id)\
+#         .filter(Application.user_id == user.id).all()
+
+#     applied_jobs_college = db.query(Application1, Job1).join(Job1, Application1.job_id == Job1.id)\
+#         .filter(Application1.user_id == user.id).all()
+
+#     applied_jobs = []
+
+#     for app, job in applied_jobs_company:
+#         applied_jobs.append({
+#             "job_type": "company",
+#             "job_id": job.unique_job_id,
+#             "job_title": job.job_title,
+#             "status": app.status,
+#             "applied_at": app.applied_at.isoformat() if app.applied_at else None
+#         })
+
+#     for app, job in applied_jobs_college:
+#         applied_jobs.append({
+#             "job_type": "college",
+#             "job_id": job.id,
+#             "job_title": job.job_title,
+#             "status": app.status,
+#             "applied_at": app.applied_at.isoformat() if app.applied_at else None
+#         })
+
+#     return JSONResponse(content={
+#         "total_jobs_applied": total_jobs_applied,
+#         "pending_count": pending_count,
+#         "interview_scheduled": interview_scheduled_count,
+#         "rejected_count": rejected_count,
+#         "total_college_enquiries_count": college_enquiries_count,
+#         "jobs_applied_by_month": jobs_applied_by_month,
+#         "pending_by_month": pending_by_month,
+#         "interview_scheduled_by_month": interview_by_month,
+#         "rejected_by_month": rejected_by_month,
+#         "college_enquiries_by_month": college_enquiries_by_month,
+#         "applied_jobs": applied_jobs
+#     })
+
 @router.get("/user-application-status/{user_id}")
 def user_application_status_counts(user_id: int, request: Request, db: Session = Depends(get_db)):
     auth_header = request.headers.get("Authorization")
@@ -237,6 +340,34 @@ def user_application_status_counts(user_id: int, request: Request, db: Session =
             "status": app.status,
             "applied_at": app.applied_at.isoformat() if app.applied_at else None
         })
+        
+    events = db.query(Event_Hoster).all()
+    event_list = [
+        {
+            "id": event.id,
+            "logo": event.logo,
+            "opportunity_type": event.opportunity_type,
+            "opportunity_sub_type": event.opportunity_sub_type,
+            "visibility": event.visibility,
+            "opportunity_title": event.opportunity_title,
+            "organization_name": event.organization_name,
+            "website": event.website,
+            "festival_name": event.festival_name,
+            "mode_of_event": event.mode_of_event,
+            "category": event.category,
+            "skills": event.skills,
+            "about_opportunity": event.about_opportunity,
+            "participant_type": event.participant_type,
+            "min_member": event.min_member,
+            "max_member": event.max_member,
+            "start_date": event.start_date.isoformat() if event.start_date else None,
+            "end_date": event.end_date.isoformat() if event.end_date else None,
+            "company_id": event.company_id,
+            "university_id": event.university_id,
+            "consultant_id": event.consultant_id
+        }
+        for event in events 
+    ]
 
     return JSONResponse(content={
         "total_jobs_applied": total_jobs_applied,
@@ -249,83 +380,10 @@ def user_application_status_counts(user_id: int, request: Request, db: Session =
         "interview_scheduled_by_month": interview_by_month,
         "rejected_by_month": rejected_by_month,
         "college_enquiries_by_month": college_enquiries_by_month,
-        "applied_jobs": applied_jobs
+        "applied_jobs": applied_jobs,
+        "all_events": event_list
     })
 
-
-# @router.get("/user-application-status/{user_id}")
-# def user_application_status_counts(user_id: int, request: Request, db: Session = Depends(get_db)):
-#     auth_header = request.headers.get("Authorization")
-#     if not auth_header or not auth_header.startswith("Bearer "):
-#         raise HTTPException(status_code=400, detail="Token is missing or invalid format")
-
-#     token = auth_header.split(" ")[1]
-#     email = request.query_params.get("email")
-#     if not email:
-#         raise HTTPException(status_code=400, detail="Email parameter is required")
-
-#     user = db.query(new_user).filter_by(id=user_id, token=token, email=email).first()
-#     if not user:
-#         raise HTTPException(status_code=404, detail="Invalid token or user not found")
-
-#     total_jobs_applied = (
-#         db.query(Application).filter_by(user_id=user.id).count() +
-#         db.query(Application1).filter_by(user_id=user.id).count()
-#     )
-
-#     def count_status(model, status):
-#         return db.query(model).filter_by(user_id=user.id, status=status).count()
-
-#     pending_count = count_status(Application, "pending") + count_status(Application1, "pending")
-#     interview_scheduled_count = count_status(Application, "interview_scheduled") + count_status(Application1, "interview_scheduled")
-#     rejected_count = count_status(Application, "rejected") + count_status(Application1, "rejected")
-
-#     college_enquiries_count = db.query(NewUserEnquiry).filter_by(email=email).count()
-
-#     def get_monthly_counts(model, date_field, status=None):
-#         query = db.query(
-#             func.date_format(getattr(model, date_field), '%Y-%m').label("month"),
-#             func.count().label("count")
-#         ).filter_by(user_id=user.id)
-
-#         if status:
-#             query = query.filter(model.status == status)
-
-#         return {r.month: r.count for r in query.group_by("month").order_by("month").all()}
-
-#     def merge_monthly_counts(model1, model2, date_field, status=None):
-#         counts1 = get_monthly_counts(model1, date_field, status)
-#         counts2 = get_monthly_counts(model2, date_field, status)
-
-#         combined = counts1.copy()
-#         for month, count in counts2.items():
-#             combined[month] = combined.get(month, 0) + count
-#         return combined
-
-#     jobs_applied_by_month = merge_monthly_counts(Application, Application1, "applied_at")
-#     pending_by_month = merge_monthly_counts(Application, Application1, "applied_at", "pending")
-#     interview_by_month = merge_monthly_counts(Application, Application1, "applied_at", "interview_scheduled")
-#     rejected_by_month = merge_monthly_counts(Application, Application1, "applied_at", "rejected")
-
-#     college_enquiries_by_month = {
-#         r.month: r.count for r in db.query(
-#             func.date_format(NewUserEnquiry.created_at, '%Y-%m').label("month"),
-#             func.count().label("count")
-#         ).filter_by(email=email).group_by("month").order_by("month").all()
-#     }
-
-#     return JSONResponse(content={
-#         "total_jobs_applied": total_jobs_applied,
-#         "pending_count": pending_count,
-#         "interview_scheduled": interview_scheduled_count,
-#         "rejected_count": rejected_count,
-#         "total_college_enquiries_count": college_enquiries_count,
-#         "jobs_applied_by_month": jobs_applied_by_month,
-#         "pending_by_month": pending_by_month,
-#         "interview_scheduled_by_month": interview_by_month,
-#         "rejected_by_month": rejected_by_month,
-#         "college_enquiries_by_month": college_enquiries_by_month
-#     })
 
 @router.get("/fetch-user-skills-jobs/{user_id}")
 async def fetch_jobs_by_new_user_skills(
