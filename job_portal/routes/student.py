@@ -362,9 +362,9 @@ def user_application_status_counts(user_id: int, request: Request, db: Session =
             # "max_member": event.max_member,
             "start_date": event.start_date.isoformat() if event.start_date else None,
             "end_date": event.end_date.isoformat() if event.end_date else None,
-            # "company_id": event.company_id,
-            # "university_id": event.university_id,
-            # "consultant_id": event.consultant_id
+            "company_id": event.company_id,
+            "university_id": event.university_id,
+            "consultant_id": event.consultant_id
         }
         for event in events 
     ]
